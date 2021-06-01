@@ -1,0 +1,462 @@
+{
+    "type": "setlists",
+    "itemsPerPage": 20,
+    "page": 3,
+    "total": 106,
+    "setlist": [
+    {
+    "id": "63c856df",
+    "versionId": "2b3bf0c6",
+    "eventDate": "20-05-2015",
+    "lastUpdated": "2020-06-02T08:34:58.000+0000",
+    "artist": {
+    "mbid": "03172286-f7ed-4864-a4db-459cd5ca9790",
+    "name": "Ciara",
+    "sortName": "Ciara",
+    "disambiguation": "American singer",
+    "url": "https://www.setlist.fm/setlists/ciara-33d6bcfd.html"
+    },
+    "venue": {
+    "id": "7bd6220c",
+    "name": "House of Blues",
+    "city": {
+    "id": "4699066",
+    "name": "Houston",
+    "state": "Texas",
+    "stateCode": "TX",
+    "coords": {
+    "lat": 29.7632836,
+    "long": -95.3632715
+    },
+    "country": {
+    "code": "US",
+    "name": "United States"
+    }
+    },
+    "url": "https://www.setlist.fm/venue/house-of-blues-houston-tx-usa-7bd6220c.html"
+    },
+    "tour": {
+    "name": "Jackie Tour"
+    },
+    "sets": {
+    "set": [
+    {
+    "song": [
+    {
+    "name": "Jackie (B.M.F.)"
+    },
+    {
+    "name": "Oh"
+    },
+    {
+    "name": "That's How I'm Feelin'"
+    },
+    {
+    "name": "1, 2 Step"
+    },
+    {
+    "name": "Stuck on You"
+    },
+    {
+    "name": "Dance Like We're Making Love"
+    },
+    {
+    "name": "Cherish the Day",
+    "cover": {
+    "mbid": "67930b3e-e00b-469f-8c74-fd69f20522ec",
+    "name": "Sade",
+    "sortName": "Sade",
+    "disambiguation": "group w/ singer of same performance name",
+    "url": "https://www.setlist.fm/setlists/sade-7bd6be90.html"
+    }
+    },
+    {
+    "name": "Promise"
+    },
+    {
+    "name": "One Woman Army"
+    },
+    {
+    "name": "Like a Boy"
+    },
+    {
+    "name": "Michael Jackson Moment / Get Up"
+    },
+    {
+    "name": "All Good / So What / Like You / Lose Control"
+    },
+    {
+    "name": "Ride"
+    },
+    {
+    "name": "Pony",
+    "cover": {
+    "mbid": "9e5fd95d-c0c1-412c-be11-06e7fbe99556",
+    "name": "Ginuwine",
+    "sortName": "Ginuwine",
+    "disambiguation": "US R&B singer",
+    "url": "https://www.setlist.fm/setlists/ginuwine-73d6b2b1.html"
+    }
+    },
+    {
+    "name": "Lullaby"
+    },
+    {
+    "name": "Body Party / I Run It"
+    },
+    {
+    "name": "I'm Out"
+    },
+    {
+    "name": "I Will Survive",
+    "cover": {
+    "mbid": "d5c51c36-ac67-4727-91ed-ee9f0df81a2d",
+    "name": "Gloria Gaynor",
+    "sortName": "Gaynor, Gloria",
+    "disambiguation": "",
+    "url": "https://www.setlist.fm/setlists/gloria-gaynor-7bd6bef4.html"
+    }
+    },
+    {
+    "name": "I Bet"
+    },
+    {
+    "name": "Goodies"
+    },
+    {
+    "name": "Baby Future's Lullaby / I Got You"
+    },
+    {
+    "name": "Give Me Love"
+    }
+    ]
+    }
+    ]
+    },
+    "url": "https://www.setlist.fm/setlist/ciara/2015/house-of-blues-houston-tx-63c856df.html"
+    },
+
+    {
+    "id": "3c82903",
+    "versionId": "638bb2eb",
+    "eventDate": "04-05-2015",
+    "lastUpdated": "2015-05-03T11:03:25.000+0000",
+    "artist": {
+    "mbid": "03172286-f7ed-4864-a4db-459cd5ca9790",
+    "name": "Ciara",
+    "sortName": "Ciara",
+    "disambiguation": "American singer",
+    "url": "https://www.setlist.fm/setlists/ciara-33d6bcfd.html"
+    },
+    "venue": {
+    "id": "53d6cb79",
+    "name": "Today Show",
+    "city": {
+    "id": "5128581",
+    "name": "New York",
+    "state": "New York",
+    "stateCode": "NY",
+    "coords": {
+    "lat": 40.7142691,
+    "long": -74.0059729
+    },
+    "country": {
+    "code": "US",
+    "name": "United States"
+    }
+    },
+    "url": "https://www.setlist.fm/venue/today-show-new-york-ny-usa-53d6cb79.html"
+    },
+    "sets": {
+    "set": [ ]
+    },
+    "url": "https://www.setlist.fm/setlist/ciara/2015/today-show-new-york-ny-3c82903.html"
+    },
+    {
+    "id": "3c83513",
+    "versionId": "23622c2b",
+    "eventDate": "03-05-2015",
+    "lastUpdated": "2018-09-23T17:34:51.000+0000",
+    "artist": {
+    "mbid": "03172286-f7ed-4864-a4db-459cd5ca9790",
+    "name": "Ciara",
+    "sortName": "Ciara",
+    "disambiguation": "American singer",
+    "url": "https://www.setlist.fm/setlists/ciara-33d6bcfd.html"
+    },
+    "venue": {
+    "id": "23d6206b",
+    "name": "House of Blues",
+    "city": {
+    "id": "4887398",
+    "name": "Chicago",
+    "state": "Illinois",
+    "stateCode": "IL",
+    "coords": {
+    "lat": 41.850033,
+    "long": -87.6500523
+    },
+    "country": {
+    "code": "US",
+    "name": "United States"
+    }
+    },
+    "url": "https://www.setlist.fm/venue/house-of-blues-chicago-il-usa-23d6206b.html"
+    },
+    "tour": {
+    "name": "Jackie Tour"
+    },
+    "sets": {
+    "set": [
+    {
+    "song": [
+    {
+    "name": "Jackie (B.M.F.)"
+    },
+    {
+    "name": "Oh"
+    },
+    {
+    "name": "That's How I'm Feelin'"
+    },
+    {
+    "name": "1, 2 Step"
+    },
+    {
+    "name": "Stuck on You"
+    },
+    {
+    "name": "Dance Like We're Making Love"
+    },
+    {
+    "name": "Cherish the Day",
+    "cover": {
+    "mbid": "67930b3e-e00b-469f-8c74-fd69f20522ec",
+    "name": "Sade",
+    "sortName": "Sade",
+    "disambiguation": "group w/ singer of same performance name",
+    "url": "https://www.setlist.fm/setlists/sade-7bd6be90.html"
+    }
+    },
+    {
+    "name": "Promise"
+    },
+    {
+    "name": "One Woman Army"
+    },
+    {
+    "name": "Like a Boy"
+    },
+    {
+    "name": "Billie Jean",
+    "cover": {
+    "mbid": "f27ec8db-af05-4f36-916e-3d57f91ecf5e",
+    "name": "Michael Jackson",
+    "sortName": "Jackson, Michael",
+    "disambiguation": "“King of Pop”",
+    "url": "https://www.setlist.fm/setlists/michael-jackson-6bd6e252.html"
+    }
+    },
+    {
+    "name": "Get Up"
+    },
+    {
+    "name": "All Good / So What / Like You / Lose Control"
+    },
+    {
+    "name": "Ride"
+    },
+    {
+    "name": "Pony",
+    "cover": {
+    "mbid": "9e5fd95d-c0c1-412c-be11-06e7fbe99556",
+    "name": "Ginuwine",
+    "sortName": "Ginuwine",
+    "disambiguation": "US R&B singer",
+    "url": "https://www.setlist.fm/setlists/ginuwine-73d6b2b1.html"
+    }
+    },
+    {
+    "name": "Lullaby"
+    },
+    {
+    "name": "Body Party"
+    },
+    {
+    "name": "I Run It"
+    },
+    {
+    "name": "I'm Out"
+    },
+    {
+    "name": "I Will Survive",
+    "cover": {
+    "mbid": "d5c51c36-ac67-4727-91ed-ee9f0df81a2d",
+    "name": "Gloria Gaynor",
+    "sortName": "Gaynor, Gloria",
+    "disambiguation": "",
+    "url": "https://www.setlist.fm/setlists/gloria-gaynor-7bd6bef4.html"
+    }
+    },
+    {
+    "name": "I Bet"
+    },
+    {
+    "name": "Goodies"
+    }
+    ]
+    },
+    {
+    "encore": 1,
+    "song": [
+    {
+    "name": "I Got You"
+    },
+    {
+    "name": "Give Me Love"
+    }
+    ]
+    }
+    ]
+    },
+    "url": "https://www.setlist.fm/setlist/ciara/2015/house-of-blues-chicago-il-3c83513.html"
+    },
+    {
+    "id": "5bc8d77c",
+    "versionId": "b1c3d82",
+    "eventDate": "17-04-2015",
+    "lastUpdated": "2019-05-20T04:51:45.000+0000",
+    "artist": {
+    "mbid": "03172286-f7ed-4864-a4db-459cd5ca9790",
+    "name": "Ciara",
+    "sortName": "Ciara",
+    "disambiguation": "American singer",
+    "url": "https://www.setlist.fm/setlists/ciara-33d6bcfd.html"
+    },
+    "venue": {
+    "id": "13d39d15",
+    "name": "Empire Polo Club",
+    "city": {
+    "id": "5359446",
+    "name": "Indio",
+    "state": "California",
+    "stateCode": "CA",
+    "coords": {
+    "lat": 33.7205771,
+    "long": -116.2155619
+    },
+    "country": {
+    "code": "US",
+    "name": "United States"
+    }
+    },
+    "url": "https://www.setlist.fm/venue/empire-polo-club-indio-ca-usa-13d39d15.html"
+    },
+    "sets": {
+    "set": [
+    {
+    "song": [
+    {
+    "name": "I Bet",
+    "info": "R3hab's Remix"
+    },
+    {
+    "name": "Get Up"
+    }
+    ]
+    }
+    ]
+    },
+    "url": "https://www.setlist.fm/setlist/ciara/2015/empire-polo-club-indio-ca-5bc8d77c.html"
+    },
+    {
+    "id": "7bcb528c",
+    "versionId": "2b8dac2a",
+    "eventDate": "03-04-2015",
+    "lastUpdated": "2015-04-03T18:45:24.000+0000",
+    "artist": {
+    "mbid": "03172286-f7ed-4864-a4db-459cd5ca9790",
+    "name": "Ciara",
+    "sortName": "Ciara",
+    "disambiguation": "American singer",
+    "url": "https://www.setlist.fm/setlists/ciara-33d6bcfd.html"
+    },
+    "venue": {
+    "id": "53d4f39d",
+    "name": "Live! with Kelly and Michael",
+    "city": {
+    "id": "5128581",
+    "name": "New York",
+    "state": "New York",
+    "stateCode": "NY",
+    "coords": {
+    "lat": 40.7142691,
+    "long": -74.0059729
+    },
+    "country": {
+    "code": "US",
+    "name": "United States"
+    }
+    },
+    "url": "https://www.setlist.fm/venue/live-with-kelly-and-michael-new-york-ny-usa-53d4f39d.html"
+    },
+    "sets": {
+    "set": [
+    {
+    "song": [
+    {
+    "name": "I Bet"
+    }
+    ]
+    }
+    ]
+    },
+    "url": "https://www.setlist.fm/setlist/ciara/2015/live-with-kelly-and-michael-new-york-ny-7bcb528c.html"
+    },
+    {
+    "id": "3bc8d484",
+    "versionId": "238ac4e7",
+    "eventDate": "28-03-2015",
+    "lastUpdated": "2015-04-25T19:58:29.000+0000",
+    "artist": {
+    "mbid": "03172286-f7ed-4864-a4db-459cd5ca9790",
+    "name": "Ciara",
+    "sortName": "Ciara",
+    "disambiguation": "American singer",
+    "url": "https://www.setlist.fm/setlists/ciara-33d6bcfd.html"
+    },
+    "venue": {
+    "id": "63d7368b",
+    "name": "New Jersey Performing Arts Center",
+    "city": {
+    "id": "5101798",
+    "name": "Newark",
+    "state": "New Jersey",
+    "stateCode": "NJ",
+    "coords": {
+    "lat": 40.735657,
+    "long": -74.1723667
+    },
+    "country": {
+    "code": "US",
+    "name": "United States"
+    }
+    },
+    "url": "https://www.setlist.fm/venue/new-jersey-performing-arts-center-newark-nj-usa-63d7368b.html"
+    },
+    "sets": {
+    "set": [
+    {
+    "song": [
+    {
+    "name": "I Bet"
+    }
+    ]
+    }
+    ]
+    },
+    "info": "Aired on April 5th, 2015",
+    "url": "https://www.setlist.fm/setlist/ciara/2015/new-jersey-performing-arts-center-newark-nj-3bc8d484.html"
+    }
+    ]
+    }
