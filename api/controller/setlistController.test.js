@@ -5,17 +5,17 @@ import { readFile } from 'fs/promises';
 
 describe('setlistController Functions', () => {
   //this test doesn't work anymore because of the db queries
-    // it('datesPerformed', async () => {
-    //   const sampleApiReturn = await readFile('./sampleReturn.json', 'utf8');
-    //   const parsedSampleAPIReturn = JSON.parse(sampleApiReturn);
-    //   const sampleDatesPerformedResult = 
-    //     [
-    //       "03-05-2015",
-    //       "20-05-2015"
-    //     ]
-    //   // doing too much// break it down
-    //   expect(await datesPerformed(parsedSampleAPIReturn,"goodies").sort()).toEqual(sampleDatesPerformedResult.sort());
-    // });
+    it('datesPerformed', async () => {
+      const sampleApiReturn = await readFile('./sampleReturn.json', 'utf8');
+      const parsedSampleAPIReturn = JSON.parse(sampleApiReturn);
+      const sampleDatesPerformedResult = 
+        [
+          "03-05-2015",
+          "20-05-2015"
+        ]
+      // doing too much// break it down
+      expect(await datesPerformed(parsedSampleAPIReturn,"goodies").sort()).toEqual(sampleDatesPerformedResult.sort());
+    });
     it('filters out artitst that aren\'t exactly the one searched for', async () => {
       const sampleApiReturn = {
         setlist:[

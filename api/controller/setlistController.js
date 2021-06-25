@@ -6,31 +6,38 @@ import {
 import 'dotenv/config';
 
   export const getSetlist = async (req,res) => {
-    const song = req.params.song.replace('%20', ' ');
-    const artist = req.params.artistName;
-    let apiResult = await getSetlistPage(req,res,1);
-    apiResult = artistFilter(apiResult,artist)
-    console.log(apiResult)
-    const artistName = apiResult.setlist[0].artist.name;
-    const artistExternalId = apiResult.setlist[0].artist.mbid;
-    const retreivedArtist = await getArtist(artistName);
-
-    if (!retreivedArtist){
-      const newArtistId = await addedArtist(artistExternalId,artistName);
-      const numberOfPages = getPageNumber(apiResult);
-      const fullSetlist = apiResult.setlist.concat(await getAllOtherPages(req,res,numberOfPages));
-
-      apiResult.setlist = fullSetlist;
+    try{
+      const song = req.params.song.replace('%20', ' ');
+      const artist = req.params.artistName;
+      let apiResult = await getSetlistPage(req,res,1);
       apiResult = artistFilter(apiResult,artist)
-      const relevantDates= {};
-      relevantDates[song] = await datesPerformed(apiResult,song,newArtistId);
-      res.send(relevantDates);
-    } 
-    else {
-      const dates = await getDates(song,retreivedArtist.id);
-      res.send(dates);
+      console.log(apiResult)
+      const artistName = apiResult.setlist[0].artist.name;
+      const artistExternalId = apiResult.setlist[0].artist.mbid;
+      const retreivedArtist = await getArtist(artistName);
+
+      if (!retreivedArtist){
+        const newArtistId = await addedArtist(artistExternalId,artistName);
+        const numberOfPages = getPageNumber(apiResult);
+        const fullSetlist = apiResult.setlist.concat(await getAllOtherPages(req,res,numberOfPages));
+
+        apiResult.setlist = fullSetlist;
+        apiResult = artistFilter(apiResult,artist)
+        const relevantDates= {};
+        relevantDates[song] = await datesPerformed(apiResult,song,newArtistId);
+        res.send(relevantDates);
+      } 
+      else {
+        const dates = await getDates(song,retreivedArtist.id);
+        res.send(dates);
+      }
     }
-    
+    catch(e){
+      const errorMsg = {
+        __error__:['something went wrong. please try again',e]
+      }
+      res.send(errorMsg)
+    }
   }
 // break this into two functions called by one function maybe
 // maybe there is adding an old song to setlist or adding song without adding to setlist
@@ -110,7 +117,11 @@ import 'dotenv/config';
       return result.data;
     } catch (error) {
       console.log(error);
-      res.status(100).json(err);
+      errorMsg = {
+        __error__:['something went wrong. please try again',e]
+      }
+      res.send(errorMsg)
+      //res.status(100).json(err);
     }
   }
 
@@ -118,7 +129,7 @@ import 'dotenv/config';
     const arrayOfConcerts = rawSetListData.setlist;
     const datesWithSong = []
     for (const concert of arrayOfConcerts){
-      let concertId = await addSetlist(concert.id, artistId, concert.lastUpdated, concert.eventDate)
+      //let concertId = await addSetlist(concert.id, artistId, concert.lastUpdated, concert.eventDate)
       // console.log(concert);
       let setsPerformedAtThisConcert = concert.sets.set
       let songsPlayedAtThisConcert = await compileSongs(setsPerformedAtThisConcert,concertId,artistId);
@@ -133,15 +144,15 @@ import 'dotenv/config';
     arrayofDateObjects.forEach(dateObject => finalDateArray.push(dateObject.date));
     return finalDateArray;
   }
-  export const compileSongs = async (concert,concertId,artistId) => {
+//concertId,artistId
+  export const compileSongs = async (concert) => {
     const songsFromThisConcert = [];
     concert.forEach(set => set.song.forEach(song => songsFromThisConcert.push(song.name.toLowerCase())));
-    for (const song of songsFromThisConcert){
-      await addSong(song,artistId,concertId)
-    }
+    // for (const song of songsFromThisConcert){
+    //   await addSong(song,artistId,concertId)
+    // }
     return songsFromThisConcert;
   }
-
 
   export const getPageNumber = (data) => Math.ceil(data.total/data.itemsPerPage);
 
