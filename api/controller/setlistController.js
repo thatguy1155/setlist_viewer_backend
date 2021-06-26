@@ -9,20 +9,16 @@ import 'dotenv/config';
     try{
       const song = req.params.song.replace('%20', ' ');
       const artist = req.params.artistName;
-      let apiResult = await getSetlistPage(req,res,1);
+      let apiResult = await getSetlistPage(artist,song,res,1);
       apiResult = artistFilter(apiResult,artist)
       console.log(apiResult)
-      const artistName = apiResult.setlist[0].artist.name;
+      //const artistName = apiResult.setlist[0].artist.name;
       const artistExternalId = apiResult.setlist[0].artist.mbid;
-      const retreivedArtist = await getArtist(artistName);
+      const retreivedArtist = await getArtist(artist);
 
       if (!retreivedArtist){
-        const newArtistId = await addedArtist(artistExternalId,artistName);
-        const numberOfPages = getPageNumber(apiResult);
-        const fullSetlist = apiResult.setlist.concat(await getAllOtherPages(req,res,numberOfPages));
-
-        apiResult.setlist = fullSetlist;
-        apiResult = artistFilter(apiResult,artist)
+        const newArtistId = await addedArtist(artistExternalId,artist);
+        apiResult = getRemainingSetlists(artist,song,res,apiResult,getAllOtherPages)
         const relevantDates= {};
         relevantDates[song] = await datesPerformed(apiResult,song,newArtistId);
         res.send(relevantDates);
@@ -38,6 +34,14 @@ import 'dotenv/config';
       }
       res.send(errorMsg)
     }
+  }
+  export const getRemainingSetlists = async (artist, song, res, apiResult, getAllOtherPages) => {
+    const numberOfPages = getPageNumber(apiResult);
+    const fullSetlist = apiResult.setlist.concat(await getAllOtherPages(artist,song,res,numberOfPages));
+    apiResult.setlist = fullSetlist;
+    const newApiResult = artistFilter(apiResult,artist)
+    console.log(newApiResult)
+    return newApiResult
   }
 // break this into two functions called by one function maybe
 // maybe there is adding an old song to setlist or adding song without adding to setlist
@@ -88,20 +92,18 @@ import 'dotenv/config';
     });
   }
 
-  export const getAllOtherPages = async (req,res,pageNumber) => {
+  export const getAllOtherPages = async (artist,song,res,pageNumber) => {
     let totalPageResult = [];
     let i;
     for (i = 2; i < pageNumber; i++) {
       await delay();
-      let setlist = await getSetlistPage(req,res,i);
+      let setlist = await getSetlistPage(artist,song,res,i);
       totalPageResult = totalPageResult.concat(setlist.setlist);
     }
     return totalPageResult;
   }
   
-  export const getSetlistPage = async (req,res,pageNumber) => {
-    const artist = req.params.artistName;
-    const song = req.params.song.replace('%20', ' ');
+  export const getSetlistPage = async (artist,song,res,pageNumber) => {
     console.log("beginning api call: " + song);
     let result;
     const URL = `https://api.setlist.fm/rest/1.0/search/setlists?artistName=${artist}&p=${pageNumber}&sortName&=`;
@@ -129,7 +131,7 @@ import 'dotenv/config';
     const arrayOfConcerts = rawSetListData.setlist;
     const datesWithSong = []
     for (const concert of arrayOfConcerts){
-      //let concertId = await addSetlist(concert.id, artistId, concert.lastUpdated, concert.eventDate)
+      let concertId = await addSetlist(concert.id, artistId, concert.lastUpdated, concert.eventDate)
       // console.log(concert);
       let setsPerformedAtThisConcert = concert.sets.set
       let songsPlayedAtThisConcert = await compileSongs(setsPerformedAtThisConcert,concertId,artistId);
@@ -144,13 +146,13 @@ import 'dotenv/config';
     arrayofDateObjects.forEach(dateObject => finalDateArray.push(dateObject.date));
     return finalDateArray;
   }
-//concertId,artistId
-  export const compileSongs = async (concert) => {
+
+  export const compileSongs = async (concert,concertId,artistId) => {
     const songsFromThisConcert = [];
     concert.forEach(set => set.song.forEach(song => songsFromThisConcert.push(song.name.toLowerCase())));
-    // for (const song of songsFromThisConcert){
-    //   await addSong(song,artistId,concertId)
-    // }
+    for (const song of songsFromThisConcert){
+      await addSong(song,artistId,concertId)
+    }
     return songsFromThisConcert;
   }
 
