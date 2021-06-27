@@ -1,8 +1,5 @@
 const axios = require("axios");
-import { query } from '../../db/db'
-import { 
-  artistQueries, setlistQueries, songQueries, setlistSongQueries
-  } from '../../db/queries'
+import { dbController } from './dbController';
 import 'dotenv/config';
 
   export const getSetlist = async (req,res) => {
@@ -14,24 +11,22 @@ import 'dotenv/config';
       console.log(apiResult)
       //const artistName = apiResult.setlist[0].artist.name;
       const artistExternalId = apiResult.setlist[0].artist.mbid;
-      const retreivedArtist = await getArtist(artist);
+      let db = new dbController(apiResult,artist,song,artistExternalId)
+      const retreivedArtist = await db.getArtist();
 
       if (!retreivedArtist){
-        const newArtistId = await addedArtist(artistExternalId,artist);
-        apiResult = getRemainingSetlists(artist,song,res,apiResult,getAllOtherPages)
-        const relevantDates= {};
-        relevantDates[song] = await datesPerformed(apiResult,song,newArtistId);
-        res.send(relevantDates);
+        apiResult = await getRemainingSetlists(artist,song,res,apiResult,getAllOtherPages);
+        db.updateApiResult(apiResult);
+        await db.addAllInfo();
       } 
-      else {
-        const dates = await getDates(song,retreivedArtist.id);
-        res.send(dates);
-      }
+      const dates = await db.getDates();
+      res.send(dates);
     }
     catch(e){
       const errorMsg = {
         __error__:['something went wrong. please try again',e]
       }
+      console.log(e)
       res.send(errorMsg)
     }
   }
