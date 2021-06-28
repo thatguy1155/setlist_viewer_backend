@@ -8,8 +8,8 @@ const pool = new Pool({
     port:5431,
     database:"setlistdb",
     max:"20",
-    connectionTimeoutMillis:0,
-    idleTimeoutMillis:0
+    connectionTimeoutMillis:1000,
+    idleTimeoutMillis:1000
 })
 
 
@@ -18,6 +18,10 @@ export const query = async (query,info) => {
     try
     {
         const results =  await pool.query(query,info);
+        // pool.end(() => {
+        //   console.log('pool has ended')
+        // })
+        
         return results.rows;
     }
     catch(e)

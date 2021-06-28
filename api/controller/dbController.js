@@ -7,11 +7,11 @@ import {
     artistId;
     concertId;
     songId;
-    constructor(apiResult, artist, song, externalId, artistId, concertId, songId) {
+    constructor(apiResult, artist, song, artistId, concertId, songId) {
       this.apiResult = apiResult;
       this.artist = artist;
       this.song = song;
-      this.externalId = externalId;
+      this.externalId = apiResult.setlist[0].artist.mbid;
       this.artistId = artistId;
       this.concertId = concertId;
       this.songId = songId;
@@ -74,7 +74,7 @@ import {
     updateApiResult = (newResult) => {
       this.apiResult = newResult
     }
-    
+
     addAllInfo = async () => {
       await this.addedArtist()
       let listOfShows = this.apiResult.setlist

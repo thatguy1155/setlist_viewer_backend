@@ -6,12 +6,8 @@ import 'dotenv/config';
     try{
       const song = req.params.song.replace('%20', ' ');
       const artist = req.params.artistName;
-      let apiResult = await getSetlistPage(artist,song,res,1);
-      apiResult = artistFilter(apiResult,artist)
-      console.log(apiResult)
-      //const artistName = apiResult.setlist[0].artist.name;
-      const artistExternalId = apiResult.setlist[0].artist.mbid;
-      let db = new dbController(apiResult,artist,song,artistExternalId)
+      let apiResult = await getFirstPageOfSetlists(artist,song,res)
+      let db = new dbController(apiResult,artist,song)
       const retreivedArtist = await db.getArtist();
 
       if (!retreivedArtist){
@@ -30,6 +26,13 @@ import 'dotenv/config';
       res.send(errorMsg)
     }
   }
+
+  export const getFirstPageOfSetlists = async (artist,song,res) => {
+    let firstPage = await getSetlistPage(artist,song,res,1);
+    firstPage = artistFilter(firstPage,artist)
+    return firstPage
+  }
+  
   export const getRemainingSetlists = async (artist, song, res, apiResult, getAllOtherPages) => {
     const numberOfPages = getPageNumber(apiResult);
     const fullSetlist = apiResult.setlist.concat(await getAllOtherPages(artist,song,res,numberOfPages));
@@ -38,51 +41,11 @@ import 'dotenv/config';
     console.log(newApiResult)
     return newApiResult
   }
-// break this into two functions called by one function maybe
-// maybe there is adding an old song to setlist or adding song without adding to setlist
-  const addSong = async (song,artistId,concertId) => {
-    const getResult = await query(songQueries.getSong,[song,artistId]);
-    const songInDb = getResult.length > 0;
-    let songId;
-    if (!songInDb) {
-      const addResult = await query(songQueries.addSong,[song,artistId]);
-      songId = addResult[0].id;
-    } else {
-      songId = getResult[0].id;
-    }
-    await query(setlistSongQueries.addSetlistSong,[concertId,songId])
-  }
-
-  const addSetlist = async (externalId,artistId,updatedAt,eventDate) => {
-    const result = await query(setlistQueries.addSetlist,[externalId,artistId,updatedAt,eventDate]);
-    return result[0].id;
-  }
-
-  const addedArtist = async (externalId,artistName) => {
-    const result = await query(artistQueries.addArtist,[externalId,artistName]);
-    return result[0].id;
-  }
-
-  const getArtist = async (artistName) => {
-    const result = await query(artistQueries.getArtist,[artistName]);
-    console.log(result);
-    return result[0];
-  }
-
-  const getDates = async (song,artistId) => {
-    const returnedValue = {};
-    const result = await query(setlistSongQueries.getSetlistSong,[song,artistId])
-    const compiledDates = compileDates(result);
-    returnedValue[song] = compiledDates;
-    return returnedValue;
-  }
 
   function delay() {
-    // `delay` returns a promise
     return new Promise(function(resolve, reject) {
-      // Only `delay` is able to resolve or reject the promise
       setTimeout(function() {
-        resolve(42); // After .1 seconds, resolve the promise with value 42
+        resolve(42);
       }, 200);
     });
   }
@@ -120,35 +83,6 @@ import 'dotenv/config';
       res.send(errorMsg)
       //res.status(100).json(err);
     }
-  }
-
-  export const datesPerformed = async (rawSetListData,song,artistId) => {
-    const arrayOfConcerts = rawSetListData.setlist;
-    const datesWithSong = []
-    for (const concert of arrayOfConcerts){
-      let concertId = await addSetlist(concert.id, artistId, concert.lastUpdated, concert.eventDate)
-      // console.log(concert);
-      let setsPerformedAtThisConcert = concert.sets.set
-      let songsPlayedAtThisConcert = await compileSongs(setsPerformedAtThisConcert,concertId,artistId);
-      songsPlayedAtThisConcert.includes(song.toLowerCase()) && datesWithSong.push(concert.eventDate);
-    }
-    console.log(`dates with song ${datesWithSong}`);
-    return datesWithSong;
-  }
-
-  const compileDates = (arrayofDateObjects) => {
-    const finalDateArray = [];
-    arrayofDateObjects.forEach(dateObject => finalDateArray.push(dateObject.date));
-    return finalDateArray;
-  }
-
-  export const compileSongs = async (concert,concertId,artistId) => {
-    const songsFromThisConcert = [];
-    concert.forEach(set => set.song.forEach(song => songsFromThisConcert.push(song.name.toLowerCase())));
-    for (const song of songsFromThisConcert){
-      await addSong(song,artistId,concertId)
-    }
-    return songsFromThisConcert;
   }
 
   export const getPageNumber = (data) => Math.ceil(data.total/data.itemsPerPage);

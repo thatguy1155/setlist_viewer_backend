@@ -1,4 +1,4 @@
-import { datesPerformed, artistFilter, getPageNumber, getSetlistPage, getRemainingSetlists, } from './setlistController';
+import { artistFilter, getPageNumber, getSetlistPage, getRemainingSetlists, } from './setlistController';
 import { readFile } from 'fs/promises';
 import axios from 'axios';
 
@@ -68,6 +68,8 @@ describe('setlistController Functions', () => {
       expect(getOtherPages).toHaveBeenCalledWith('Ciara','Goodies', null, 6);
       //expect(getRemainingSetlists('Ciara','Goodies', null, parsedSampleAPIReturn, getOtherPages)).toEqual(parsedSampleAPIReturn);
     });
+    
+
     //use in frontend later
     // it('makes first letter of a word capital except for prepositions', () => {
     //   expect(songCapitalization("livin' on a prayer")).toEqual("Livin' on a Prayer");
