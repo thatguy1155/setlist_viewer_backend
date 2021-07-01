@@ -4,18 +4,19 @@ import 'dotenv/config';
 
   export const getSetlist = async (req,res) => {
     try{
-      const song = req.params.song.replace('%20', ' ');
-      const artist = req.params.artistName;
-      let apiResult = await getFirstPageOfSetlists(artist,song,res)
-      let db = new dbController(apiResult,artist,song)
-      const retreivedArtist = await db.getArtist();
+      const songName = req.params.song.replace('%20', ' ');
+      const artistName = req.params.artistName;
+      let apiResult = await getFirstPageOfSetlists(artistName,songName,res)
+      let db = new dbController(apiResult)
+      const externalId = apiResult.setlist[0].artist.mbid;
+      let artistId = await db.getArtist(artistName);
 
-      if (!retreivedArtist){
-        apiResult = await getRemainingSetlists(artist,song,res,apiResult,getAllOtherPages);
+      if (!artistId){
+        apiResult = await getRemainingSetlists(artistName,songName,res,apiResult,getAllOtherPages);
         db.updateApiResult(apiResult);
-        await db.addAllInfo();
+        artistId = await db.addAllInfo({apiResult,externalId,artistName});
       } 
-      const dates = await db.getDates();
+      const dates = await db.getDates({songName:songName,artistId});
       res.send(dates);
     }
     catch(e){
