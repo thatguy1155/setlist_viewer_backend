@@ -26,7 +26,7 @@ import {
     getDates = async ({artistId,songName}) => {
       const returnedValue = {};
       const result = await query(setlistSongQueries.getSetlistSong,[songName,artistId])
-      const compiledDates = this.putDatesInOneArray(result);
+      const compiledDates = this.datesFromDateObject(result);
       returnedValue[songName] = compiledDates;
       return returnedValue;
     }
@@ -74,7 +74,7 @@ import {
       songsFromThisConcert = this.downcaseNames(songsFromThisConcert);
       return songsFromThisConcert;
     }
-    putDatesInOneArray = (arrayofDateObjects) => {
+    datesFromDateObject = (arrayofDateObjects) => {
       return arrayofDateObjects.map(dateObject => dateObject.date);
     }
 
