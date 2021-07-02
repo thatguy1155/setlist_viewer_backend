@@ -52,28 +52,27 @@ import {
 
     addSetlist = async ({artistId,concertExternalId,updatedAt,eventDate}) => {
       const result = await query(setlistQueries.addSetlist,[concertExternalId,artistId,updatedAt,eventDate]);
-      return result[0].id;
+      return result[0].id; 
     }
   
     addedArtist = async ({externalId,artistName}) => {
       const result = await query(artistQueries.addArtist,[externalId,artistName]);
-      return result[0].id;
+      return result[0].id; //return object instead of id and pull the id out in the bigger
     }
   
     getArtist = async (artistName) => {
       console.log(artistName)
       const result = await query(artistQueries.getArtist,[artistName]);
-      return result.length > [0] ? result[0].id : 0;
+      return result.length > [0] ? result[0].id : 0;//return null if nothing
     }
 
+    songNames = (set) => set.song.map(song => song.name)
+
     deriveSongsFromSets = (sets) => {
-      let songsFromThisConcert = [];
-      sets.forEach(set => set.song.forEach(song => songsFromThisConcert.push(song.name)));
-      //map solution that omits the encore for some reason
-      // let songsFromThisConcert = sets.map(set => set.song.map(song => song.name))[0];
-      songsFromThisConcert = this.downcaseNames(songsFromThisConcert);
-      return songsFromThisConcert;
+      const songsFromThisConcert = sets.flatMap(set => this.songNames(set));
+      return this.downcaseNames(songsFromThisConcert);
     }
+
     datesFromDateObject = (arrayofDateObjects) => {
       return arrayofDateObjects.map(dateObject => dateObject.date);
     }
