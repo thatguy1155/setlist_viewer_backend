@@ -6,13 +6,13 @@ import 'dotenv/config';
     try{
       const songName = req.params.song.replace('%20', ' ');
       const artistName = req.params.artistName;
-      let apiResult = await getFirstPageOfSetlists(artistName,songName,res)
+      let apiResult = await getFirstPageOfSetlists(artistName)
       let db = new dbController(apiResult)
       const externalId = apiResult.setlist[0].artist.mbid;
       let artistId = await db.getArtist(artistName);
 
       if (!artistId){
-        apiResult = await getRemainingSetlists(artistName,songName,res,apiResult,getAllOtherPages);
+        apiResult = await getRemainingSetlists({artistName,songName,apiResult});
         db.updateApiResult(apiResult);
         artistId = await db.addAllInfo({apiResult,externalId,artistName});
       } 
@@ -21,25 +21,27 @@ import 'dotenv/config';
     }
     catch(e){
       const errorMsg = {
-        __error__:['something went wrong. please try again',e]
+        __error__:[e]
       }
       console.log(e)
       res.send(errorMsg)
     }
   }
 
-  export const getFirstPageOfSetlists = async (artist,song,res) => {
-    let firstPage = await getSetlistPage(artist,song,res,1);
-    firstPage = artistFilter(firstPage,artist)
+  export const getFirstPageOfSetlists = async (artistName) => {
+    let firstPage = await getSetlistPage({artistName,pageNumber:1});
+    if (!firstPage) {
+      throw 'couldn\'t find the artist.';
+    }
+    firstPage = artistFilter({returnedInfo:firstPage,artistName})
     return firstPage
   }
   
-  export const getRemainingSetlists = async (artist, song, res, apiResult, getAllOtherPages) => {
+  export const getRemainingSetlists = async ({artistName, apiResult}) => {
     const numberOfPages = getPageNumber(apiResult);
-    const fullSetlist = apiResult.setlist.concat(await getAllOtherPages(artist,song,res,numberOfPages));
+    const fullSetlist = apiResult.setlist.concat(await getAllOtherPages({artistName,numberOfPages}));
     apiResult.setlist = fullSetlist;
-    const newApiResult = artistFilter(apiResult,artist)
-    console.log(newApiResult)
+    const newApiResult = artistFilter({returnedInfo:apiResult,artistName})
     return newApiResult
   }
 
@@ -51,22 +53,28 @@ import 'dotenv/config';
     });
   }
 
-  export const getAllOtherPages = async (artist,song,res,pageNumber) => {
+  export const getAllOtherPages = async ({artistName,numberOfPages}) => {
     let totalPageResult = [];
     let i;
-    for (i = 2; i < pageNumber; i++) {
+    for (i = 2; i < numberOfPages; i++) {
       await delay();
-      let setlist = await getSetlistPage(artist,song,res,i);
+      let setlist = await getSetlistPage({artistName,pageNumber:i});
       totalPageResult = totalPageResult.concat(setlist.setlist);
     }
     return totalPageResult;
   }
+
+  export const getPageNumber = (data) => Math.ceil(data.total/data.itemsPerPage);
+
+  export const artistFilter = ({returnedInfo,artistName}) => {
+    const filteredSetlists = returnedInfo.setlist.filter(set => set.artist.name.toLowerCase() === artistName.toLowerCase())
+    returnedInfo.setlist = filteredSetlists
+    return returnedInfo
+  }
   
-  export const getSetlistPage = async (artist,song,res,pageNumber) => {
-    console.log("beginning api call: " + song);
+  export const getSetlistPage = async ({artistName,pageNumber}) => {
     let result;
-    const URL = `https://api.setlist.fm/rest/1.0/search/setlists?artistName=${artist}&p=${pageNumber}&sortName&=`;
-  
+    const URL = `https://api.setlist.fm/rest/1.0/search/setlists?artistName=${artistName}&p=${pageNumber}&sortName&=`;
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -78,21 +86,10 @@ import 'dotenv/config';
       return result.data;
     } catch (error) {
       console.log(error);
-      errorMsg = {
-        __error__:['something went wrong. please try again',e]
-      }
-      res.send(errorMsg)
-      //res.status(100).json(err);
     }
   }
 
-  export const getPageNumber = (data) => Math.ceil(data.total/data.itemsPerPage);
-
-  export const artistFilter = (returnedInfo,artist) => {
-    const filteredSetlists = returnedInfo.setlist.filter(set => set.artist.name.toLowerCase() === artist.toLowerCase())
-    returnedInfo.setlist = filteredSetlists
-    return returnedInfo
-  }
+  
 //use later in frontend
 
   // exports.songCapitalization = (song) => {

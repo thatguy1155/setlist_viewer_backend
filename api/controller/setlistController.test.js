@@ -42,7 +42,7 @@ describe('setlistController Functions', () => {
         ]
       }
       // doing too much// break it down
-      expect(artistFilter(sampleApiReturn,"Ciara")).toEqual(sampleResult);
+      expect(artistFilter({returnedInfo:sampleApiReturn,artistName:"Ciara"})).toEqual(sampleResult);
     });
     it('tests the API call from setlist fm,', async () => {
       const sampleApiReturn = await readFile('./sampleReturn.json', 'utf8');
