@@ -24,11 +24,9 @@ import {
     }
 
     getDates = async ({artistId,songName}) => {
-      const returnedValue = {};
       const result = await query(setlistSongQueries.getSetlistSong,[songName,artistId])
-      const compiledDates = this.datesFromDateObject(result);
-      returnedValue[songName] = compiledDates;
-      return returnedValue;
+      const compiledDates = this.datesFromDateObjects(result);
+      return { [songName]: compiledDates}
     }
 
     addSong = async ({songName,artistId}) => {
@@ -73,7 +71,7 @@ import {
       return this.downcaseNames(songsFromThisConcert);
     }
 
-    datesFromDateObject = (arrayofDateObjects) => {
+    datesFromDateObjects = (arrayofDateObjects) => {
       return arrayofDateObjects.map(dateObject => dateObject.date);
     }
 
