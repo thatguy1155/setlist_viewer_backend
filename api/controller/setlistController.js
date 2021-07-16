@@ -7,13 +7,12 @@ import 'dotenv/config';
       const songName = req.params.song.replace('%20', ' ');
       const artistName = req.params.artistName;
       let apiResult = await getFirstPageOfSetlists(artistName)
-      let db = new dbController(apiResult)
+      let db = new dbController()
       const externalId = apiResult.setlist[0].artist.mbid;
       let artistId = await db.getArtist(artistName);
 
       if (!artistId){
         apiResult = await getRemainingSetlists({artistName,songName,apiResult});
-        db.updateApiResult(apiResult);
         artistId = await db.addAllInfo({apiResult,externalId,artistName});
       } 
       const dates = await db.getDates({songName:songName,artistId});

@@ -6,60 +6,62 @@ import {
   export class dbController {
     
     addAllInfo = async ({apiResult,externalId,artistName}) => {
-      const artistId = await this.addedArtist({externalId,artistName})
-      let listOfShows = apiResult.setlist
-      for (const concert of listOfShows){
-        let concertId = await this.addSetlist({artistId, concertExternalId:concert.id, updatedAt:concert.lastUpdated, eventDate:concert.eventDate})
-        let concertSets = concert.sets.set
-        if (concertSets.length > 0){
-          let songsFromThisConcert = this.deriveSongsFromSets(concertSets);
-          for (const songName of songsFromThisConcert){
-            let returnedSong = await this.getSong({songName,artistId})
-            let songId = !returnedSong ? await this.addSong({songName,artistId}): returnedSong;
-            await this.addSetlistSong({concertId,songId});
-          }
-        }
-      }
+      const artistId = await this.addArtist({externalId,artistName})
+      let setlists = apiResult.setlist
+      await this.parseSetlistData({ setlists, artistId })
       return artistId
     }
 
-    getDates = async ({artistId,songName}) => {
+    parseSetlistData = async ({ setlists, artistId }) => {
+      for (const setlist of setlists){
+        let setlistId = await this.addSetlist({artistId, setlistExternalId:setlist.id, updatedAt:setlist.lastUpdated, eventDate:setlist.eventDate})
+        let sets = setlist.sets.set
+        if (sets.length > 0) this.parseSongData({ sets, artistId, setlistId })
+      }
+    }
+
+    parseSongData = async ({ sets, artistId, setlistId }) => {
+      let songs = this.deriveSongsFromSets(sets);
+      for (const songName of songs) await this.addSongData({ songName, artistId, setlistId })
+    }
+
+    addSongData = async ({ songName, artistId, setlistId }) => {
+      let returnedSong = await this.getSong({ songName, artistId })
+      let songId = !returnedSong ? await this.addSongName({ songName, artistId }): returnedSong.id;
+      await this.addSongDate({ setlistId, songId });
+    }
+
+    getDates = async ({ artistId, songName }) => {
       const result = await query(setlistSongQueries.getSetlistSong,[songName,artistId])
       const compiledDates = this.datesFromDateObjects(result);
       return { [songName]: compiledDates}
     }
 
-    addSong = async ({songName,artistId}) => {
+    addSongName = async ({ songName, artistId }) => {
       const addResult = await query(songQueries.addSong,[songName,artistId]);
       return addResult[0].id;
     }
     
-    getSong = async ({songName,artistId}) => {
-      const getResult = await query(songQueries.getSong,[songName,artistId]);
-      const songInDb = getResult.length > 0;
-      if (songInDb) {
-        return getResult[0].id;
-      } else {
-        return null;
-      }
+    getSong = async ({ songName, artistId }) => {
+      const songs = await query(songQueries.getSong,[songName,artistId]);
+      return songs[0];
     }
 
-    addSetlistSong = async ({concertId,songId}) => {
-      await query(setlistSongQueries.addSetlistSong,[concertId,songId])
+    addSongDate = async ({ setlistId, songId }) => {
+      await query(setlistSongQueries.addSetlistSong,[setlistId,songId])
     }
 
-    addSetlist = async ({artistId,concertExternalId,updatedAt,eventDate}) => {
-      const result = await query(setlistQueries.addSetlist,[concertExternalId,artistId,updatedAt,eventDate]);
+    addSetlist = async ({ artistId, setlistExternalId, updatedAt, eventDate}) => {
+      const result = await query(setlistQueries.addSetlist,[setlistExternalId,artistId,updatedAt,eventDate]);
       return result[0].id; 
     }
   
-    addedArtist = async ({externalId,artistName}) => {
+    addArtist = async ({ externalId, artistName }) => {
       const result = await query(artistQueries.addArtist,[externalId,artistName]);
       return result[0].id; //return object instead of id and pull the id out in the bigger
     }
   
     getArtist = async (artistName) => {
-      console.log(artistName)
       const result = await query(artistQueries.getArtist,[artistName]);
       return result.length > [0] ? result[0].id : 0;//return null if nothing
     }
@@ -67,16 +69,12 @@ import {
     songNames = (set) => set.song.map(song => song.name)
 
     deriveSongsFromSets = (sets) => {
-      const songsFromThisConcert = sets.flatMap(set => this.songNames(set));
-      return this.downcaseNames(songsFromThisConcert);
+      const songsFromThisSetlist = sets.flatMap(set => this.songNames(set));
+      return this.downcaseNames(songsFromThisSetlist);
     }
 
     datesFromDateObjects = (arrayofDateObjects) => {
       return arrayofDateObjects.map(dateObject => dateObject.date);
-    }
-
-    updateApiResult = (newResult) => {
-      this.apiResult = newResult
     }
 
     downcaseNames = (names) => {return names.map(songName => songName.toLowerCase());}

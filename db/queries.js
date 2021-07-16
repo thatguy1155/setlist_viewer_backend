@@ -9,7 +9,7 @@ export const setlistQueries = {
 };
 
 export const songQueries = {
-    getSong:"select id from songs where name = $1 and artist_id = $2",
+    getSong:"select * from songs where name = $1 and artist_id = $2",
     addSong:"insert into songs(name,artist_id) VALUES ($1,$2) returning id"
 };
 
