@@ -66,7 +66,7 @@ import {
       return result.length > [0] ? result[0].id : 0;//return null if nothing
     }
 
-    songNames = (set) => set.song.map(song => song.name)
+    songNames = (set) => set.song.map(song => song.name);
 
     deriveSongsFromSets = (sets) => {
       const songsFromThisSetlist = sets.flatMap(set => this.songNames(set));
