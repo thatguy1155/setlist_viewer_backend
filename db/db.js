@@ -16,7 +16,6 @@ const pool = new Pool({
 
 
 export const query = async (query,info) => {
-    console.log(process.env.NODE_ENV);
     try
     {
         const results =  await pool.query(query,info);
@@ -28,7 +27,7 @@ export const query = async (query,info) => {
     }
     catch(e)
     {
-        console.log(e);
+      console.log(e);
     }
     
 }
