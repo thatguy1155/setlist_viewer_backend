@@ -4,7 +4,7 @@ export const artistQueries = {
 };
 
 export const setlistQueries = {
-    getSetlist:"select * from setlists where external_id = $1",
+    getSetlist:"select * from setlists where date = $1",
     addSetlist:"insert into setlists(external_id,artist_id,updated_at,date) VALUES ($1,$2,$3,$4) returning *"
 };
 

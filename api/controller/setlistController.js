@@ -66,7 +66,12 @@ import 'dotenv/config';
   export const getPageNumber = (data) => Math.ceil(data.total/data.itemsPerPage);
 
   export const artistFilter = ({returnedInfo,artistName}) => {
-    const filteredSetlists = returnedInfo.setlist.filter(set => set.artist.name.toLowerCase() === artistName.toLowerCase())
+    const filteredSetlists = returnedInfo.setlist.filter(set => {
+      // console.log('******')
+      // console.log(artistName.toLowerCase());
+      // console.log(set.artist.name.toLowerCase());
+      return set.artist.name.toLowerCase() === artistName.toLowerCase()
+    })
     returnedInfo.setlist = filteredSetlists
     return returnedInfo
   }

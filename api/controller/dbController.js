@@ -30,10 +30,11 @@ import {
     addSongData = async ({ songName, artistId, setlistId }) => {
       const returnedSong = await this.getSong({ songName, artistId });
       let songId;
-      if (returnedSong === []) {
-        songId = await this.addSongName({ songName, artistId })[0].id;
+      if (returnedSong.length > 0) {
+        songId = returnedSong[0].id;
       } else {
-        songId = returnedSong.length > 0 && returnedSong[0].id;
+        const song = await this.addSongName({ songName, artistId });
+        songId = song[0].id;
       }
       await this.addSongDate({ setlistId, songId });
     }
