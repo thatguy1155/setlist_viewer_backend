@@ -3,6 +3,7 @@ import { readFile } from 'fs/promises';
 import axios from 'axios';
 
 jest.mock('axios');
+process.env.NODE_ENV = 'test';
 
 describe('setlistController Functions', () => {
   //this test doesn't work anymore because of the db queries
