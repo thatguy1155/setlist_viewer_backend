@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --config ./jest.config.json",
-    "test:watch": "npm run test -- --watch",
+    "test:watch": "npm run test -- --watch --detectOpenHandles",
     "test2": "node --experimental-vm-modules node_modules/.bin/jest --config ./jest.config.json",
     "start": "nodemon --exec babel-node index.js",
     "dev": "nodemon index"
