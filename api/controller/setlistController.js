@@ -8,11 +8,11 @@ import 'dotenv/config';
       const artistName = req.params.artistName;
       let db = new dbController()
       let artistId = await db.getArtist(artistName);
-
       if (!artistId){
         const firstPage = await getFirstPageOfSetlists(artistName);
+        console.log(firstPage)
         const externalId = firstPage.setlist[0].artist.mbid;
-        const apiResult = await getRemainingSetlists({artistName,songName,firstPage});
+        const apiResult = await getRemainingSetlists({artistName,apiResult:firstPage});
         artistId = await db.addAllInfo({apiResult,externalId,artistName});
       } 
       const dates = await db.getDates({songName:songName,artistId});
