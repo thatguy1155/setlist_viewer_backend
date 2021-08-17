@@ -4,6 +4,18 @@ import {
   } from '../../db/queries'
 
   export class dbController {
+
+    songSearch = async ({name,artistId}) => {
+      const songEntryString = this.separateSongWords(name)
+      console.log(songEntryString,artistId)
+      return await query(songQueries.searchSong,[songEntryString,artistId])
+    }
+
+    separateSongWords = (entry) => {
+      const songArr = entry.split(' ')
+      const queryString = songArr.join('|')
+      return queryString
+    } 
     
     addAllInfo = async ({apiResult,externalId,artistName}) => {
       const artist = await this.addArtist({externalId,artistName});
@@ -12,7 +24,7 @@ import {
       await this.parseSetlistData({ setlists, artistId })
       return artistId
     }
-
+    
     parseSetlistData = async ({ setlists, artistId }) => {
       for (const setlist of setlists){
         let addedSetlist = await this.addSetlist({artistId, setlistExternalId:setlist.id, updatedAt:setlist.lastUpdated, eventDate:setlist.eventDate});

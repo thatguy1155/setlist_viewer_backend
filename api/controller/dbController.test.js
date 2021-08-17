@@ -17,7 +17,7 @@ beforeEach(async () => {
   process.env.NODE_ENV = 'test';
   const artist = await query(artistQueries.addArtist,[1234,'nirvana']);
   artistId = artist[0].id;
-  const song = await query(songQueries.addSong,["lithium",artistId]);
+  const song = await query(songQueries.addSong,["smells like teen spirit",artistId]);
   songId = song[0].id;
   const setlist = await query(setlistQueries.addSetlist,[1234,artistId,'19-01-2020','18-02-1992']);
   setlistId = setlist[0].id;
@@ -108,7 +108,10 @@ describe('getDates', () => {
     const expectedResult = {'jackie (b.m.f.)':['20-05-2015','03-05-2015']}
     expect(dates).toEqual(expectedResult)
   });
-
-  
 });
-
+describe('songSearch', () => {
+  it('searches for songs whose titles match the search input', async () => {
+    const results =  await db.songSearch({name:'smells like teen spirit', artistId})
+    const expectedResult = {name: 'smells like teen spirit',rank: 0.4}
+    expect(results[0]).toEqual(expectedResult)
+  })})

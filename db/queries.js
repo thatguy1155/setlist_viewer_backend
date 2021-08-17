@@ -10,7 +10,8 @@ export const setlistQueries = {
 
 export const songQueries = {
     getSong:"select * from songs where name = $1 and artist_id = $2",
-    addSong:"insert into songs(name,artist_id) VALUES ($1,$2) returning *"
+    addSong:"insert into songs(name,artist_id) VALUES ($1,$2) returning *",
+    searchSong:"SELECT name, ts_rank_cd(to_tsvector(name), query) AS rank FROM songs, to_tsquery($1) query WHERE query @@ to_tsvector(name) AND artist_id = $2 ORDER BY rank DESC LIMIT 10"
 };
 
 export const setlistSongQueries = {
