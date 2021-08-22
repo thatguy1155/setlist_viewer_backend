@@ -1,4 +1,5 @@
 import { query } from '../../db/db'
+import { searchString } from './auxFunctions'
 import { 
   artistQueries, setlistQueries, songQueries, setlistSongQueries
   } from '../../db/queries'
@@ -6,16 +7,13 @@ import {
   export class dbController {
 
     songSearch = async ({name,artistId}) => {
-      const songEntryString = this.separateSongWords(name)
+      const songEntryString = searchString(name)
       console.log(songEntryString,artistId)
       return await query(songQueries.searchSong,[songEntryString,artistId])
     }
-
-    separateSongWords = (entry) => {
-      const songArr = entry.split(' ')
-      const queryString = songArr.join('|')
-      return queryString
-    } 
+    
+    //TODO:Move to separate file
+     
     
     addAllInfo = async ({apiResult,externalId,artistName}) => {
       const artist = await this.addArtist({externalId,artistName});

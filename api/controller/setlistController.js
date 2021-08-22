@@ -5,7 +5,7 @@ import 'dotenv/config';
   export const getSetlist = async (req,res) => {
     try{
       const songName = req.params.song.replace('%20', ' ');
-      const artistName = req.params.artistName;
+      const { artistName } = req.params;
       let db = new dbController()
       let artistId = await db.getArtist(artistName);
       if (!artistId){
