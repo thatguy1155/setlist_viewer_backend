@@ -52,6 +52,7 @@ import {
     getDates = async ({ artistId, songName }) => {
       const result = await query(setlistSongQueries.getSetlistSong,[songName,artistId])
       const compiledDates = this.datesFromDateObjects(result);
+      if (compiledDates.length == 0) throw "no song by this name"
       return { [songName]: compiledDates }
     }
 
