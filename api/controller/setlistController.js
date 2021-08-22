@@ -5,12 +5,11 @@ import 'dotenv/config';
   export const getSetlist = async (req,res) => {
     try{
       const songName = req.params.song.replace('%20', ' ');
-      const artistName = req.params.artistName;
+      const { artistName } = req.params;
       let db = new dbController()
       let artistId = await db.getArtist(artistName);
       if (!artistId){
         const firstPage = await getFirstPageOfSetlists(artistName);
-        console.log(firstPage)
         const externalId = firstPage.setlist[0].artist.mbid;
         const apiResult = await getRemainingSetlists({artistName,apiResult:firstPage});
         artistId = await db.addAllInfo({apiResult,externalId,artistName});
@@ -33,6 +32,7 @@ import 'dotenv/config';
       throw 'couldn\'t find the artist.';
     }
     firstPage = artistFilter({returnedInfo:firstPage,artistName})
+    console.log(firstPage)
     return firstPage
   }
   
