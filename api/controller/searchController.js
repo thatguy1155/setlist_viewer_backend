@@ -9,7 +9,9 @@ export const getSongs = async (req,res) => {
     let artistId = await db.getArtist(artistName);
     if (!artistId) throw 'couldn\'t find the artist.';
     const songs = await db.songSearch({name:songName,artistId})
-    res.send(songs);
+    if (songs.length > 0){
+      res.send(songs);
+    }
 
   } catch(e){
     const errorMsg = {

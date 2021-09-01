@@ -1,12 +1,12 @@
-const dbName = process.env.NODE_ENV === 'test' ? 'setlist_test_db' : 'setlistdb';
+const dbName = process.env.NODE_ENV === 'test' ? 'setlist_test_db' : 'setlist_db';
 
 
 const { Pool } = require('pg');
 const pool = new Pool({
-    user: "postgres",
+    user: "jamesglass",
     password: "James112090!",
     host:"localhost",
-    port:5431,
+    port:5432,
     database:dbName,
     max:"20",
     connectionTimeoutMillis:1000,
