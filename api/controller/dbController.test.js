@@ -112,6 +112,13 @@ describe('getDates', () => {
 describe('songSearch', () => {
   it('searches for songs whose titles match the search input', async () => {
     const results =  await db.songSearch({name:'smells like teen spirit', artistId})
-    const expectedResult = {name: 'smells like teen spirit',rank: 0.4}
+    const expectedResult = {name: 'smells like teen spirit',rank: 1}
     expect(results[0]).toEqual(expectedResult)
-  })})
+  })
+  it('searches for songs whose titles partially match the search input', async () => {
+    const results =  await db.songSearch({name:'smellsspirit', artistId})
+    const expectedResult = {name: 'smells like teen spirit',rank: 0.44}
+    expect(results[0]).toEqual(expectedResult)
+  })
+
+})
